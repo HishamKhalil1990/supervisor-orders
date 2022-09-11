@@ -19,10 +19,9 @@ import Loader from './Components/Loader';
  
 const RegisterScreen = (props) => {
   const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [userAge, setUserAge] = useState('');
-  const [userAddress, setUserAddress] = useState('');
+  const [cardCode, setCardCode] = useState('');
   const [userPassword, setUserPassword] = useState('');
+  const [confirmPass, setConfirmPass] = useState('');
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
   const [
@@ -30,90 +29,87 @@ const RegisterScreen = (props) => {
     setIsRegistraionSuccess
   ] = useState(false);
  
-  const emailInputRef = createRef();
-  const ageInputRef = createRef();
-  const addressInputRef = createRef();
+  const cardCodeRef = createRef();
+  const confirmPassRef = createRef();
   const passwordInputRef = createRef();
  
   const handleSubmitButton = () => {
     setErrortext('');
     if (!userName) {
-      alert('Please fill Name');
+      alert('Please fill Username');
       return;
     }
-    if (!userEmail) {
-      alert('Please fill Email');
-      return;
-    }
-    if (!userAge) {
-      alert('Please fill Age');
-      return;
-    }
-    if (!userAddress) {
-      alert('Please fill Address');
+    if (!cardCode) {
+      alert('Please fill Card Code');
       return;
     }
     if (!userPassword) {
       alert('Please fill Password');
       return;
     }
+    if (!confirmPass) {
+      alert('Please fill Confirmation Password');
+      return;
+    }
     //Show Loader
     setLoading(true);
-    var dataToSend = {
-      name: userName,
-      email: userEmail,
-      age: userAge,
-      address: userAddress,
-      password: userPassword,
-    };
-    var formBody = [];
-    for (var key in dataToSend) {
-      var encodedKey = encodeURIComponent(key);
-      var encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
+    // var dataToSend = {
+    //   name: userName,
+    //   email: cardCode,
+    //   confirm: confirmPass,
+    //   password: userPassword,
+    // };
+    // var formBody = [];
+    // for (var key in dataToSend) {
+    //   var encodedKey = encodeURIComponent(key);
+    //   var encodedValue = encodeURIComponent(dataToSend[key]);
+    //   formBody.push(encodedKey + '=' + encodedValue);
+    // }
+    // formBody = formBody.join('&');
  
-    fetch('http://localhost:3000/api/user/register', {
-      method: 'POST',
-      body: formBody,
-      headers: {
-        //Header Defination
-        'Content-Type':
-        'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        //Hide Loader
-        setLoading(false);
-        console.log(responseJson);
-        // If server response message same as Data Matched
-        if (responseJson.status === 'success') {
-          setIsRegistraionSuccess(true);
-          console.log(
-            'Registration Successful. Please Login to proceed'
-          );
-        } else {
-          setErrortext(responseJson.msg);
-        }
-      })
-      .catch((error) => {
-        //Hide Loader
-        setLoading(false);
-        console.error(error);
-      });
+    // fetch('http://localhost:3000/api/user/register', {
+    //   method: 'POST',
+    //   body: formBody,
+    //   headers: {
+    //     //Header Defination
+    //     'Content-Type':
+    //     'application/x-www-form-urlencoded;charset=UTF-8',
+    //   },
+    // })
+    //   .then((response) => response.json())
+    //   .then((responseJson) => {
+    //     //Hide Loader
+    //     setLoading(false);
+    //     console.log(responseJson);
+    //     // If server response message same as Data Matched
+    //     if (responseJson.status === 'success') {
+    //       setIsRegistraionSuccess(true);
+    //       console.log(
+    //         'Registration Successful. Please Login to proceed'
+    //       );
+    //     } else {
+    //       setErrortext(responseJson.msg);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     //Hide Loader
+    //     setLoading(false);
+    //     console.error(error);
+    //   });
+    setLoading(false); // temp code line
+    //setErrortext("error"); // temp code line
+    setIsRegistraionSuccess(true); // temp code line
   };
   if (isRegistraionSuccess) {
     return (
       <View
         style={{
           flex: 1,
-          backgroundColor: '#307ecc',
+          backgroundColor: '#fff',
           justifyContent: 'center',
         }}>
         <Image
-          source={require('../assets/success.jpg')}
+          source={require('../assets/success.png')}
           style={{
             height: 150,
             resizeMode: 'contain',
@@ -133,7 +129,7 @@ const RegisterScreen = (props) => {
     );
   }
   return (
-    <View style={{flex: 1, backgroundColor: '#307ecc'}}>
+    <View style={{flex: 1, backgroundColor: '#fff'}}>
       <Loader loading={loading} />
       <ScrollView
         keyboardShouldPersistTaps="handled"
@@ -158,12 +154,11 @@ const RegisterScreen = (props) => {
               style={styles.inputStyle}
               onChangeText={(UserName) => setUserName(UserName)}
               underlineColorAndroid="#f000"
-              placeholder="Enter Name"
+              placeholder="Enter Username"
               placeholderTextColor="#8b9cb5"
-              autoCapitalize="sentences"
               returnKeyType="next"
               onSubmitEditing={() =>
-                emailInputRef.current && emailInputRef.current.focus()
+                cardCodeRef.current && cardCodeRef.current.focus()
               }
               blurOnSubmit={false}
             />
@@ -171,12 +166,11 @@ const RegisterScreen = (props) => {
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(UserEmail) => setUserEmail(UserEmail)}
+              onChangeText={(CardCode) => setCardCode(CardCode)}
               underlineColorAndroid="#f000"
-              placeholder="Enter Email"
+              placeholder="Enter Card Code"
               placeholderTextColor="#8b9cb5"
-              keyboardType="email-address"
-              ref={emailInputRef}
+              ref={cardCodeRef}
               returnKeyType="next"
               onSubmitEditing={() =>
                 passwordInputRef.current &&
@@ -198,8 +192,8 @@ const RegisterScreen = (props) => {
               returnKeyType="next"
               secureTextEntry={true}
               onSubmitEditing={() =>
-                ageInputRef.current &&
-                ageInputRef.current.focus()
+                confirmPassRef.current &&
+                confirmPassRef.current.focus()
               }
               blurOnSubmit={false}
             />
@@ -207,32 +201,15 @@ const RegisterScreen = (props) => {
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(UserAge) => setUserAge(UserAge)}
-              underlineColorAndroid="#f000"
-              placeholder="Enter Age"
-              placeholderTextColor="#8b9cb5"
-              keyboardType="numeric"
-              ref={ageInputRef}
-              returnKeyType="next"
-              onSubmitEditing={() =>
-                addressInputRef.current &&
-                addressInputRef.current.focus()
-              }
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={(UserAddress) =>
-                setUserAddress(UserAddress)
+              onChangeText={(ConfirmPass) =>
+                setConfirmPass(ConfirmPass)
               }
               underlineColorAndroid="#f000"
-              placeholder="Enter Address"
+              placeholder="Enter Confirmation Password"
               placeholderTextColor="#8b9cb5"
-              autoCapitalize="sentences"
-              ref={addressInputRef}
+              ref={confirmPassRef}
               returnKeyType="next"
+              secureTextEntry={true}
               onSubmitEditing={Keyboard.dismiss}
               blurOnSubmit={false}
             />
@@ -265,10 +242,10 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   buttonStyle: {
-    backgroundColor: '#7DE24E',
+    backgroundColor: '#790252',
     borderWidth: 0,
     color: '#FFFFFF',
-    borderColor: '#7DE24E',
+    borderColor: '#790252',
     height: 40,
     alignItems: 'center',
     borderRadius: 30,
@@ -284,7 +261,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     flex: 1,
-    color: 'white',
+    color: '#790252',
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 1,

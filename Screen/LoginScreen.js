@@ -76,8 +76,8 @@ const LoginScreen = ({navigation}) => {
     //     setLoading(false);
     //     console.error(error);
     //   });
-    setLoading(false);
-    navigation.replace('DrawerNavigationRoutes');
+    setLoading(false); // temp code line
+    navigation.replace('DrawerNavigationRoutes'); // temp code line
   };
  
   return (
