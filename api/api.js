@@ -80,7 +80,18 @@ const getOrders = async (cardcode) => {
             timeout:30000,
         })
         .then((response) => {
-            resolve(response.data.orders)
+            const mappedResults = response.data.orders.map(rec => {
+                const arr = rec.Comments.split(",")
+                return {
+                    APPNO: rec.APPNO,
+                    CardName: rec.CardName,
+                    DocTotal: rec.DocTotal,
+                    City: arr[0].split(":-")[1].split(":")[1],
+                    Phone: arr[1].split(":")[1],
+                    Name: arr[2].split(":")[1],
+                }
+            })
+            resolve(mappedResults)
             
         })
         .catch((error) => {

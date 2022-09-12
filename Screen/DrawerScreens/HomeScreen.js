@@ -6,14 +6,21 @@ import  { useEffect, useState } from 'react'
 import {View, Text, SafeAreaView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../api/api'
+import CardList from '../Components/CardList';
+import Loader from '../Components/Loader';
  
 const HomeScreen = () => {
 
   const [cardCode,setCardCode] = useState("")
   const [data,setData] = useState([])
+  const [isLoading,setIsLoading] = useState(true)
 
   const getUserOrders = async(cardcode) => {
-    return api.getOrders(cardcode)
+    api.getOrders(cardcode)
+    .then(orders => {
+      setIsLoading(false)
+      setData(orders)
+    })
   }
 
   useEffect(() => {
@@ -21,22 +28,20 @@ const HomeScreen = () => {
       let user = await AsyncStorage.getItem('user')
       user = JSON.parse(user)
       setCardCode(user.cardcode)
-      getUserOrders(user.cardcode)
-      .then(data => {
-        setData(data)
-      })
     }
     checkStorage()
   },[])
 
+  useEffect(() => {
+    if(cardCode != ""){
+      getUserOrders(cardCode)
+    }
+  },[cardCode])
+
   const showData = () => {
-    return data.map(rec => {
-      return (
-        <Text key={rec.APPNO}>
-          {rec.APPNO}
-        </Text>
-      )
-    })
+    return (
+      <CardList data={data} cardCode={cardCode} setIsLoading={setIsLoading} getUserOrders={getUserOrders}/>
+    )
   }
 
   return (
@@ -49,7 +54,11 @@ const HomeScreen = () => {
             justifyContent: 'center',
           }}>
           <View>
-                {showData()}
+                {isLoading?
+                  <Loader loading={isLoading} />
+                  :
+                  showData()
+                }
           </View>
         </View>
       </View>
