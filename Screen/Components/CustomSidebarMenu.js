@@ -2,6 +2,7 @@
 // https://aboutreact.com/react-native-login-and-signup/
  
 // Import React and Component
+import  { useEffect, useState } from 'react'
 import {View, Text, Alert, StyleSheet} from 'react-native';
  
 import {
@@ -13,16 +14,28 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
  
 const CustomSidebarMenu = (props) => {
+
+  const [userName,setUserName] = useState("")
+
+  useEffect(() => {
+    const checkStorage = async() => {
+      let user = await AsyncStorage.getItem('user')
+      user = JSON.parse(user)
+      setUserName(user.username)
+    }
+    checkStorage()
+  },[])
+
   return (
     <View style={stylesSidebar.sideMenuContainer}>
       <View style={stylesSidebar.profileHeader}>
         <View style={stylesSidebar.profileHeaderPicCircle}>
           <Text style={{fontSize: 25, color: '#790252'}}>
-            {'About React'.charAt(0)}
+            {userName.toUpperCase().charAt(0)}
           </Text>
         </View>
         <Text style={stylesSidebar.profileHeaderText}>
-          AboutReact
+          {userName}
         </Text>
       </View>
       <View style={stylesSidebar.profileHeaderLine} />

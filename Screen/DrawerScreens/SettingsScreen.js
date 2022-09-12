@@ -14,33 +14,10 @@ const SettingsScreen = () => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <Text
-            style={{
-              fontSize: 20,
-              textAlign: 'center',
-              marginBottom: 16,
-            }}>
-            Example of Splash, Login and Sign Up in React Native
-            {'\n\n'}
-            This is the Settings Screen
-          </Text>
+          <View>
+
+          </View>
         </View>
-        <Text
-          style={{
-            fontSize: 18,
-            textAlign: 'center',
-            color: 'grey',
-          }}>
-          Splash, Login and Register Example{'\n'}React Native
-        </Text>
-        <Text
-          style={{
-            fontSize: 16,
-            textAlign: 'center',
-            color: 'grey',
-          }}>
-          www.aboutreact.com
-        </Text>
       </View>
     </SafeAreaView>
   );

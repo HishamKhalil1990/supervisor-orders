@@ -37,6 +37,7 @@ const Auth = () => {
 };
  
 const App = () => {
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Auth">

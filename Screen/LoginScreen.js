@@ -2,7 +2,7 @@
 // https://aboutreact.com/react-native-login-and-signup/
  
 // Import React and Component
-import {useState, createRef} from 'react';
+import {useState, createRef, useEffect} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -14,10 +14,9 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
- 
 import AsyncStorage from '@react-native-async-storage/async-storage';
- 
 import Loader from './Components/Loader';
+import api from '../api/api'
  
 const LoginScreen = ({navigation}) => {
   const [userName, setUserName] = useState('');
@@ -26,6 +25,17 @@ const LoginScreen = ({navigation}) => {
   const [errortext, setErrortext] = useState('');
  
   const passwordInputRef = createRef();
+
+  useEffect(() => {
+    const checkStorage = async() => {
+      const user = await AsyncStorage.getItem('user')
+      if(user){
+        navigation.replace('DrawerNavigationRoutes');
+      }
+    }
+    checkStorage()
+  },[])
+
  
   const handleSubmitPress = () => {
     setErrortext('');
@@ -38,46 +48,26 @@ const LoginScreen = ({navigation}) => {
       return;
     }
     setLoading(true);
-    // let dataToSend = {username: userName, password: userPassword};
-    // let formBody = [];
-    // for (let key in dataToSend) {
-    //   let encodedKey = encodeURIComponent(key);
-    //   let encodedValue = encodeURIComponent(dataToSend[key]);
-    //   formBody.push(encodedKey + '=' + encodedValue);
-    // }
-    // formBody = formBody.join('&');
- 
-    // fetch('http://localhost:3000/api/user/login', {
-    //   method: 'POST',
-    //   body: formBody,
-    //   headers: {
-    //     //Header Defination
-    //     'Content-Type':
-    //     'application/x-www-form-urlencoded;charset=UTF-8',
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //     //Hide Loader
-    //     setLoading(false);
-    //     console.log(responseJson);
-    //     // If server response message same as Data Matched
-    //     if (responseJson.status === 'success') {
-    //       AsyncStorage.setItem('user_id', responseJson.data.email);
-    //       console.log(responseJson.data.email);
-    //       navigation.replace('DrawerNavigationRoutes');
-    //     } else {
-    //       setErrortext(responseJson.msg);
-    //       console.log('Please check your email id or password');
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     //Hide Loader
-    //     setLoading(false);
-    //     console.error(error);
-    //   });
-    setLoading(false); // temp code line
-    navigation.replace('DrawerNavigationRoutes'); // temp code line
+    api.checkUser(userName,userPassword)
+    .then((response) => {
+      //Hide Loader
+      setLoading(false);
+      // If server response message same as Data Matched
+      if (response.status === 'success') {
+          AsyncStorage.setItem('user', JSON.stringify({
+              username:response.data.username,
+              cardcode:response.data.cardcode,
+          }));
+          navigation.replace('DrawerNavigationRoutes');
+      } else {
+          setErrortext('Please check your username or password');
+      }
+    })
+    .catch(() => {
+      //Hide Loader
+      setLoading(false);
+      setErrortext('Please check internet');
+    });
   };
  
   return (

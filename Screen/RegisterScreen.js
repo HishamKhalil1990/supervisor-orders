@@ -16,6 +16,7 @@ import {
 } from 'react-native';
  
 import Loader from './Components/Loader';
+import api from '../api/api'
  
 const RegisterScreen = (props) => {
   const [userName, setUserName] = useState('');
@@ -53,52 +54,22 @@ const RegisterScreen = (props) => {
     }
     //Show Loader
     setLoading(true);
-    // var dataToSend = {
-    //   name: userName,
-    //   email: cardCode,
-    //   confirm: confirmPass,
-    //   password: userPassword,
-    // };
-    // var formBody = [];
-    // for (var key in dataToSend) {
-    //   var encodedKey = encodeURIComponent(key);
-    //   var encodedValue = encodeURIComponent(dataToSend[key]);
-    //   formBody.push(encodedKey + '=' + encodedValue);
-    // }
-    // formBody = formBody.join('&');
- 
-    // fetch('http://localhost:3000/api/user/register', {
-    //   method: 'POST',
-    //   body: formBody,
-    //   headers: {
-    //     //Header Defination
-    //     'Content-Type':
-    //     'application/x-www-form-urlencoded;charset=UTF-8',
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //     //Hide Loader
-    //     setLoading(false);
-    //     console.log(responseJson);
-    //     // If server response message same as Data Matched
-    //     if (responseJson.status === 'success') {
-    //       setIsRegistraionSuccess(true);
-    //       console.log(
-    //         'Registration Successful. Please Login to proceed'
-    //       );
-    //     } else {
-    //       setErrortext(responseJson.msg);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     //Hide Loader
-    //     setLoading(false);
-    //     console.error(error);
-    //   });
-    setLoading(false); // temp code line
-    //setErrortext("error"); // temp code line
-    setIsRegistraionSuccess(true); // temp code line
+    api.registerUser(userName,userPassword,cardCode,confirmPass)
+    .then((response) => {
+      //Hide Loader
+      setLoading(false);
+      // If server response message same as Data Matched
+      if (response.status === 'success') {
+        setIsRegistraionSuccess(true);
+      } else {
+        setErrortext(response.msg);
+      }
+    })
+    .catch(() => {
+      //Hide Loader
+      setLoading(false);
+      setErrortext('Please check internet');
+    });
   };
   if (isRegistraionSuccess) {
     return (
