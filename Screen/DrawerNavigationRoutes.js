@@ -80,11 +80,11 @@ const DrawerNavigatorRoutes = (props) => {
         options={{drawerLabel: 'Home Screen'}}
         component={HomeScreenStack}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="settingScreenStack"
         options={{drawerLabel: 'Setting Screen'}}
         component={SettingScreenStack}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 };

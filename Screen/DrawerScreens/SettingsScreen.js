@@ -3,19 +3,22 @@
  
 // Import React and Component
 import {View, Text, SafeAreaView} from 'react-native';
+import SettingLayout from '../Components/SettingLayout';
  
 const SettingsScreen = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
-      <View style={{flex: 1, padding: 16}}>
+      <View style={{flex: 1, paddingTop: 16}}>
         <View
           style={{
             flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
+            // alignItems: 'center',
+            // justifyContent: 'center',
           }}>
-          <View>
-
+          <View style={{
+            flex:1,
+          }}>
+            <SettingLayout />
           </View>
         </View>
       </View>
