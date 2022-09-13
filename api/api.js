@@ -8,7 +8,7 @@ const checkUser = async (username,password) => {
     //         axios({
     //             baseURL,
     //             method:'get',
-    //             url:'/check-user',
+    //             url:'/check-supervisor-user',
     //             headers: {
     //                 'Content-Type': 'application/json',
     //             },
@@ -70,7 +70,7 @@ const registerUser = async (username,password,cardCode,confirmPass) => {
     //         axios({
     //             baseURL,
     //             method:'post',
-    //             url:'/register-user',
+    //             url:'/register-supervisor-user',
     //             headers: {
     //                 'Content-Type': 'application/json',
     //             },
