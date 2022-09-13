@@ -65,10 +65,14 @@ const RegisterScreen = (props) => {
         setErrortext(response.msg);
       }
     })
-    .catch(() => {
+    .catch((num) => {
       //Hide Loader
       setLoading(false);
-      setErrortext('Please check internet');
+      if(num == 1){
+        setErrortext('somthing wrong happened ! please try again')
+      }else{
+        setErrortext('Please check internet')
+      }
     });
   };
   if (isRegistraionSuccess) {

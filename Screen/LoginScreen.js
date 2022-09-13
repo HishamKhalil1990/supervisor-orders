@@ -63,10 +63,14 @@ const LoginScreen = ({navigation}) => {
           setErrortext('Please check your username or password');
       }
     })
-    .catch(() => {
+    .catch((num) => {
       //Hide Loader
       setLoading(false);
-      setErrortext('Please check internet');
+      if(num == 1){
+        setErrortext('somthing wrong happened ! please try again')
+      }else{
+        setErrortext('Please check internet')
+      }
     });
   };
  

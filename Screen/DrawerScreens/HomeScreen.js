@@ -19,7 +19,20 @@ const HomeScreen = () => {
     api.getOrders(cardcode)
     .then(orders => {
       setIsLoading(false)
-      setData(orders)
+      if(orders.length > 0){
+        alert("updated")
+        setData(orders)
+      }else{
+        alert("could not update due to server shutdown, please try again later")
+      }
+    })
+    .catch((num) => {
+      setIsLoading(false)
+      if(num == 1){
+        alert('somthing wrong happened ! please try again')
+      }else{
+        alert('Please check internet')
+      }
     })
   }
 
