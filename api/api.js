@@ -161,10 +161,16 @@ const getOrders = async (cardcode) => {
                 Name: arr[2].split(":")[1],
               };
             });
-            resolve(mappedResults);
+            const result = {
+              status:"success",
+              orders:mappedResults
+            }
+            resolve(result);
           } else {
-            const mappedResults = [];
-            resolve(mappedResults);
+            const result = {
+              status:"failed",
+            }
+            resolve(result);
           }
         })
         .catch((error) => {

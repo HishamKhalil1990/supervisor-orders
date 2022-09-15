@@ -17,10 +17,14 @@ const HomeScreen = () => {
 
   const getUserOrders = async(cardcode) => {
     api.getOrders(cardcode)
-    .then(orders => {
+    .then(results => {
       setIsLoading(false)
-      if(orders.length > 0){
-        alert("updated")
+      if(results.status == "success"){
+        if(results.orders.length > 0){
+          alert("updated")
+        }else{
+          alert("no open orders")
+        }
         setData(orders)
       }else{
         alert("could not update due to server shutdown, please try again later")
