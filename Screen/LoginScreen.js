@@ -1,8 +1,8 @@
 // Example of Splash, Login and Sign Up in React Native
 // https://aboutreact.com/react-native-login-and-signup/
- 
+
 // Import React and Component
-import {useState, createRef, useEffect} from 'react';
+import { useState, createRef, useEffect } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -13,67 +13,70 @@ import {
   Keyboard,
   TouchableOpacity,
   KeyboardAvoidingView,
-} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Loader from './Components/Loader';
-import api from '../api/api'
- 
-const LoginScreen = ({navigation}) => {
-  const [userName, setUserName] = useState('');
-  const [userPassword, setUserPassword] = useState('');
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Loader from "./Components/Loader";
+import api from "../api/api";
+
+const LoginScreen = ({ navigation }) => {
+  const [userName, setUserName] = useState("");
+  const [userPassword, setUserPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [errortext, setErrortext] = useState('');
- 
+  const [errortext, setErrortext] = useState("");
+
   const passwordInputRef = createRef();
 
   useEffect(() => {
-    const checkStorage = async() => {
-      const user = await AsyncStorage.getItem('user')
-      if(user){
-        navigation.replace('DrawerNavigationRoutes');
+    const checkStorage = async () => {
+      const user = await AsyncStorage.getItem("user");
+      if (user) {
+        navigation.replace("DrawerNavigationRoutes");
       }
-    }
-    checkStorage()
-  },[])
+    };
+    checkStorage();
+  }, []);
 
- 
   const handleSubmitPress = () => {
-    setErrortext('');
+    setErrortext("");
     if (!userName) {
-      alert('Please fill Username');
+      alert("Please fill Username");
       return;
     }
     if (!userPassword) {
-      alert('Please fill Password');
+      alert("Please fill Password");
       return;
     }
     setLoading(true);
-    api.checkUser(userName,userPassword)
-    .then((response) => {
-      //Hide Loader
-      setLoading(false);
-      // If server response message same as Data Matched
-      if (response.status === 'success') {
-          AsyncStorage.setItem('user', JSON.stringify({
-              username:response.data.username,
-              cardcode:response.data.cardcode,
-          }));
-          navigation.replace('DrawerNavigationRoutes');
-      } else {
-          setErrortext('Please check your username or password');
-      }
-    })
-    .catch((num) => {
-      //Hide Loader
-      setLoading(false);
-      if(num == 1){
-        setErrortext('somthing wrong happened ! please try again')
-      }else{
-        setErrortext('Please check internet')
-      }
-    });
+    api
+      .checkUser(userName, userPassword)
+      .then((response) => {
+        //Hide Loader
+        setLoading(false);
+        // If server response message same as Data Matched
+        if (response.status === "success") {
+          AsyncStorage.setItem(
+            "user",
+            JSON.stringify({
+              username: response.data.username,
+              cardcode: response.data.cardcode,
+            })
+          );
+          navigation.replace("DrawerNavigationRoutes");
+        } else {
+          setErrortext("Please check your username or password");
+        }
+      })
+      .catch((num) => {
+        //Hide Loader
+        setLoading(false);
+        if (num == 1) {
+          setErrortext("somthing wrong happened ! please try again");
+        } else {
+          setErrortext("Please check internet");
+        }
+      });
   };
- 
+
   return (
     <View style={styles.mainBody}>
       <Loader loading={loading} />
@@ -81,18 +84,19 @@ const LoginScreen = ({navigation}) => {
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
           flex: 1,
-          justifyContent: 'center',
-          alignContent: 'center',
-        }}>
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
         <View>
           <KeyboardAvoidingView enabled>
-            <View style={{alignItems: 'center'}}>
+            <View style={{ alignItems: "center" }}>
               <Image
-                source={require('../assets/logo-alrayhan.jpg')}
+                source={require("../assets/logo-alrayhan.jpg")}
                 style={{
-                  width: '50%',
+                  width: "50%",
                   height: 100,
-                  resizeMode: 'contain',
+                  resizeMode: "contain",
                   margin: 30,
                 }}
               />
@@ -100,16 +104,13 @@ const LoginScreen = ({navigation}) => {
             <View style={styles.SectionStyle}>
               <TextInput
                 style={styles.inputStyle}
-                onChangeText={(UserName) =>
-                  setUserName(UserName)
-                }
+                onChangeText={(UserName) => setUserName(UserName)}
                 placeholder="Enter Username" //dummy@abc.com
                 placeholderTextColor="#8b9cb5"
                 autoCapitalize="none"
                 returnKeyType="next"
                 onSubmitEditing={() =>
-                  passwordInputRef.current &&
-                  passwordInputRef.current.focus()
+                  passwordInputRef.current && passwordInputRef.current.focus()
                 }
                 underlineColorAndroid="#f000"
                 blurOnSubmit={false}
@@ -118,9 +119,7 @@ const LoginScreen = ({navigation}) => {
             <View style={styles.SectionStyle}>
               <TextInput
                 style={styles.inputStyle}
-                onChangeText={(UserPassword) =>
-                  setUserPassword(UserPassword)
-                }
+                onChangeText={(UserPassword) => setUserPassword(UserPassword)}
                 placeholder="Enter Password" //12345
                 placeholderTextColor="#8b9cb5"
                 keyboardType="default"
@@ -132,20 +131,20 @@ const LoginScreen = ({navigation}) => {
                 returnKeyType="next"
               />
             </View>
-            {errortext != '' ? (
-              <Text style={styles.errorTextStyle}>
-                {errortext}
-              </Text>
+            {errortext != "" ? (
+              <Text style={styles.errorTextStyle}>{errortext}</Text>
             ) : null}
             <TouchableOpacity
               style={styles.buttonStyle}
               activeOpacity={0.5}
-              onPress={handleSubmitPress}>
+              onPress={handleSubmitPress}
+            >
               <Text style={styles.buttonTextStyle}>LOGIN</Text>
             </TouchableOpacity>
             <Text
               style={styles.registerTextStyle}
-              onPress={() => navigation.navigate('RegisterScreen')}>
+              onPress={() => navigation.navigate("RegisterScreen")}
+            >
               New Here ? Register
             </Text>
           </KeyboardAvoidingView>
@@ -155,16 +154,16 @@ const LoginScreen = ({navigation}) => {
   );
 };
 export default LoginScreen;
- 
+
 const styles = StyleSheet.create({
   mainBody: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-    alignContent: 'center',
+    justifyContent: "center",
+    backgroundColor: "#fff",
+    alignContent: "center",
   },
   SectionStyle: {
-    flexDirection: 'row',
+    flexDirection: "row",
     height: 40,
     marginTop: 20,
     marginLeft: 35,
@@ -172,12 +171,12 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   buttonStyle: {
-    backgroundColor: '#790252',
+    backgroundColor: "#790252",
     borderWidth: 0,
-    color: '#FFFFFF',
-    borderColor: '#790252',
+    color: "#FFFFFF",
+    borderColor: "#790252",
     height: 40,
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 30,
     marginLeft: 35,
     marginRight: 35,
@@ -185,30 +184,30 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   buttonTextStyle: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     paddingVertical: 10,
     fontSize: 16,
   },
   inputStyle: {
     flex: 1,
-    color: '#790252',
+    color: "#790252",
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 1,
     borderRadius: 30,
-    borderColor: '#dadae8',
+    borderColor: "#dadae8",
   },
   registerTextStyle: {
-    color: '#790252',
-    textAlign: 'center',
-    fontWeight: 'bold',
+    color: "#790252",
+    textAlign: "center",
+    fontWeight: "bold",
     fontSize: 14,
-    alignSelf: 'center',
+    alignSelf: "center",
     padding: 10,
   },
   errorTextStyle: {
-    color: 'red',
-    textAlign: 'center',
+    color: "red",
+    textAlign: "center",
     fontSize: 14,
   },
 });

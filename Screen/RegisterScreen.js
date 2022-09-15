@@ -1,8 +1,8 @@
 // Example of Splash, Login and Sign Up in React Native
 // https://aboutreact.com/react-native-login-and-signup/
- 
+
 // Import React and Component
-import {useState, createRef} from 'react';
+import { useState, createRef } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -13,112 +13,111 @@ import {
   Keyboard,
   TouchableOpacity,
   ScrollView,
-} from 'react-native';
- 
-import Loader from './Components/Loader';
-import api from '../api/api'
- 
+} from "react-native";
+
+import Loader from "./Components/Loader";
+import api from "../api/api";
+
 const RegisterScreen = (props) => {
-  const [userName, setUserName] = useState('');
-  const [cardCode, setCardCode] = useState('');
-  const [userPassword, setUserPassword] = useState('');
-  const [confirmPass, setConfirmPass] = useState('');
+  const [userName, setUserName] = useState("");
+  const [cardCode, setCardCode] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
   const [loading, setLoading] = useState(false);
-  const [errortext, setErrortext] = useState('');
-  const [
-    isRegistraionSuccess,
-    setIsRegistraionSuccess
-  ] = useState(false);
- 
+  const [errortext, setErrortext] = useState("");
+  const [isRegistraionSuccess, setIsRegistraionSuccess] = useState(false);
+
   const cardCodeRef = createRef();
   const confirmPassRef = createRef();
   const passwordInputRef = createRef();
- 
+
   const handleSubmitButton = () => {
-    setErrortext('');
+    setErrortext("");
     if (!userName) {
-      alert('Please fill Username');
+      alert("Please fill Username");
       return;
     }
     if (!cardCode) {
-      alert('Please fill Card Code');
+      alert("Please fill Card Code");
       return;
     }
     if (!userPassword) {
-      alert('Please fill Password');
+      alert("Please fill Password");
       return;
     }
     if (!confirmPass) {
-      alert('Please fill Confirmation Password');
+      alert("Please fill Confirmation Password");
       return;
     }
     //Show Loader
     setLoading(true);
-    api.registerUser(userName,userPassword,cardCode,confirmPass)
-    .then((response) => {
-      //Hide Loader
-      setLoading(false);
-      // If server response message same as Data Matched
-      if (response.status === 'success') {
-        setIsRegistraionSuccess(true);
-      } else {
-        setErrortext(response.msg);
-      }
-    })
-    .catch((num) => {
-      //Hide Loader
-      setLoading(false);
-      if(num == 1){
-        setErrortext('somthing wrong happened ! please try again')
-      }else{
-        setErrortext('Please check internet')
-      }
-    });
+    api
+      .registerUser(userName, userPassword, cardCode, confirmPass)
+      .then((response) => {
+        //Hide Loader
+        setLoading(false);
+        // If server response message same as Data Matched
+        if (response.status === "success") {
+          setIsRegistraionSuccess(true);
+        } else {
+          setErrortext(response.msg);
+        }
+      })
+      .catch((num) => {
+        //Hide Loader
+        setLoading(false);
+        if (num == 1) {
+          setErrortext("somthing wrong happened ! please try again");
+        } else {
+          setErrortext("Please check internet");
+        }
+      });
   };
   if (isRegistraionSuccess) {
     return (
       <View
         style={{
           flex: 1,
-          backgroundColor: '#fff',
-          justifyContent: 'center',
-        }}>
+          backgroundColor: "#fff",
+          justifyContent: "center",
+        }}
+      >
         <Image
-          source={require('../assets/success.png')}
+          source={require("../assets/success.png")}
           style={{
             height: 150,
-            resizeMode: 'contain',
-            alignSelf: 'center'
+            resizeMode: "contain",
+            alignSelf: "center",
           }}
         />
-        <Text style={styles.successTextStyle}>
-          Registration Successful
-        </Text>
+        <Text style={styles.successTextStyle}>Registration Successful</Text>
         <TouchableOpacity
           style={styles.buttonStyle}
           activeOpacity={0.5}
-          onPress={() => props.navigation.navigate('LoginScreen')}>
+          onPress={() => props.navigation.navigate("LoginScreen")}
+        >
           <Text style={styles.buttonTextStyle}>Login Now</Text>
         </TouchableOpacity>
       </View>
     );
   }
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <Loader loading={loading} />
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
-          justifyContent: 'center',
-          alignContent: 'center',
-        }}>
-        <View style={{alignItems: 'center'}}>
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
+        <View style={{ alignItems: "center" }}>
           <Image
-            source={require('../assets/logo-alrayhan.jpg')}
+            source={require("../assets/logo-alrayhan.jpg")}
             style={{
-              width: '50%',
+              width: "50%",
               height: 100,
-              resizeMode: 'contain',
+              resizeMode: "contain",
               margin: 30,
             }}
           />
@@ -148,8 +147,7 @@ const RegisterScreen = (props) => {
               ref={cardCodeRef}
               returnKeyType="next"
               onSubmitEditing={() =>
-                passwordInputRef.current &&
-                passwordInputRef.current.focus()
+                passwordInputRef.current && passwordInputRef.current.focus()
               }
               blurOnSubmit={false}
             />
@@ -157,9 +155,7 @@ const RegisterScreen = (props) => {
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(UserPassword) =>
-                setUserPassword(UserPassword)
-              }
+              onChangeText={(UserPassword) => setUserPassword(UserPassword)}
               underlineColorAndroid="#f000"
               placeholder="Enter Password"
               placeholderTextColor="#8b9cb5"
@@ -167,8 +163,7 @@ const RegisterScreen = (props) => {
               returnKeyType="next"
               secureTextEntry={true}
               onSubmitEditing={() =>
-                confirmPassRef.current &&
-                confirmPassRef.current.focus()
+                confirmPassRef.current && confirmPassRef.current.focus()
               }
               blurOnSubmit={false}
             />
@@ -176,9 +171,7 @@ const RegisterScreen = (props) => {
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(ConfirmPass) =>
-                setConfirmPass(ConfirmPass)
-              }
+              onChangeText={(ConfirmPass) => setConfirmPass(ConfirmPass)}
               underlineColorAndroid="#f000"
               placeholder="Enter Confirmation Password"
               placeholderTextColor="#8b9cb5"
@@ -189,15 +182,14 @@ const RegisterScreen = (props) => {
               blurOnSubmit={false}
             />
           </View>
-          {errortext != '' ? (
-            <Text style={styles.errorTextStyle}>
-              {errortext}
-            </Text>
+          {errortext != "" ? (
+            <Text style={styles.errorTextStyle}>{errortext}</Text>
           ) : null}
           <TouchableOpacity
             style={styles.buttonStyle}
             activeOpacity={0.5}
-            onPress={handleSubmitButton}>
+            onPress={handleSubmitButton}
+          >
             <Text style={styles.buttonTextStyle}>REGISTER</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
@@ -206,10 +198,10 @@ const RegisterScreen = (props) => {
   );
 };
 export default RegisterScreen;
- 
+
 const styles = StyleSheet.create({
   SectionStyle: {
-    flexDirection: 'row',
+    flexDirection: "row",
     height: 40,
     marginTop: 20,
     marginLeft: 35,
@@ -217,12 +209,12 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   buttonStyle: {
-    backgroundColor: '#790252',
+    backgroundColor: "#790252",
     borderWidth: 0,
-    color: '#FFFFFF',
-    borderColor: '#790252',
+    color: "#FFFFFF",
+    borderColor: "#790252",
     height: 40,
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 30,
     marginLeft: 35,
     marginRight: 35,
@@ -230,27 +222,27 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonTextStyle: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     paddingVertical: 10,
     fontSize: 16,
   },
   inputStyle: {
     flex: 1,
-    color: '#790252',
+    color: "#790252",
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 1,
     borderRadius: 30,
-    borderColor: '#dadae8',
+    borderColor: "#dadae8",
   },
   errorTextStyle: {
-    color: 'red',
-    textAlign: 'center',
+    color: "red",
+    textAlign: "center",
     fontSize: 14,
   },
   successTextStyle: {
-    color: 'white',
-    textAlign: 'center',
+    color: "white",
+    textAlign: "center",
     fontSize: 18,
     padding: 30,
   },
