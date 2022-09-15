@@ -92,7 +92,7 @@ const LoginScreen = ({ navigation }) => {
           <KeyboardAvoidingView enabled>
             <View style={{ alignItems: "center" }}>
               <Image
-                source={require("../assets/logo-alrayhan.jpg")}
+                source={require("../assets/logo-alrayhan.png")}
                 style={{
                   width: "50%",
                   height: 100,
