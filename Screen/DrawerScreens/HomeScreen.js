@@ -25,7 +25,7 @@ const HomeScreen = () => {
         }else{
           alert("no open orders")
         }
-        setData(orders)
+        setData(results.orders)
       }else{
         alert("could not update due to server shutdown, please try again later")
       }
